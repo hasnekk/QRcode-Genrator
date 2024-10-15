@@ -1,0 +1,22 @@
+{
+  "name": "qrcode-genrator",
+  "version": "1.0.0",
+  "description": "First project for WEB at FER.",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kristijan Hasnek",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.12.0",
+    "eslint": "^9.12.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.11.0",
+    "prettier": "3.3.3"
+  }
+}
