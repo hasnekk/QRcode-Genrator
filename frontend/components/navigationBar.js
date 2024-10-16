@@ -7,7 +7,6 @@ class NavigationBar extends HTMLElement {
   connectedCallback() {
     this.render();
     window.addEventListener("urlchange", () => {
-      console.log("hej");
       this.handleLocationChange();
     });
   }
@@ -50,16 +49,6 @@ class NavigationBar extends HTMLElement {
                 </li>`
               )
               .join("")}
-              
-              <li>
-                <a
-                  data-link
-                  href="/qrcode/932837323"
-                  class="nav-link px-2"
-                >
-                  nesto
-                </a>
-              </li>
           </ul>
 
           <div class="col-md-3 text-end">

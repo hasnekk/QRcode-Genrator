@@ -16,9 +16,16 @@ class Router {
       },
 
       {
-        path: /\/qrcode\/([a-zA-Z0-9-]+)/, // /qrcode/UUID
+        path: /\/qrcode\/([-a-zA-Z0-9]+)/i, // /qrcode/UUID
         name: "QR-CODE Details",
         component: "qrcode-details-component",
+        showAsLink: false,
+      },
+
+      {
+        path: "/errorPage",
+        name: "Error Page",
+        component: "error-page",
         showAsLink: false,
       },
     ];
@@ -35,7 +42,7 @@ class Router {
       }));
   }
 
-  navigate(url) {
+  navigate(url, msg) {
     if (url === "/" || url === "/index.html") {
       url = "/home";
     }
@@ -45,10 +52,13 @@ class Router {
     const app = document.getElementById("app");
     app.innerHTML = "";
 
+    const state = {
+      msg,
+    };
     if (window.location.pathname === route.path) {
-      window.history.replaceState({}, "", route.path);
+      window.history.replaceState(state, "", route.path);
     } else {
-      window.history.pushState({}, "", route.path);
+      window.history.pushState(state, "", route.path);
     }
     window.dispatchEvent(new Event("urlchange"));
 
