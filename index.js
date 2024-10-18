@@ -12,7 +12,9 @@ import { fileURLToPath } from 'url';
 
 dotenv.config();
 
-const PORT = process.env.PORT || 3000;
+const externalUrl = process.env.RENDER_EXTERNAL_URL;
+const PORT =
+  externalUrl && process.env.PORT ? parseInt(process.env.PORT) : 4000;
 
 // #region CONFIGS
 const AUTH_SEVRER = 'https://dev-nunmbneef5z3z1bw.us.auth0.com';
@@ -29,7 +31,8 @@ const config = {
   clientID: process.env.OIDC_CLIENT_ID,
   clientSecret: process.env.OIDC_CLIENT_SECRET,
   issuerBaseURL: AUTH_SEVRER,
-  baseURL: `${process.env.BASE_URL}:${PORT}`,
+  baseURL: externalUrl || `http://localhost:${PORT}`,
+  // baseURL: `${process.env.BASE_URL}:${PORT}`,
   authorizationParams: {
     response_type: 'code',
   },
@@ -219,6 +222,14 @@ app.post('/ticket', jwtCheck, async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+if (externalUrl) {
+  const hostname = '0.0.0.0';
+  app.listen(PORT, hostname, () => {
+    console.log(`Server locally running at http://${hostname}:${PORT}/ and from
+  outside on ${externalUrl}`);
+  });
+} else {
+  app.listen(PORT, () => {
+    console.log(`Server listening on http://localhost:${PORT}/`);
+  });
+}
