@@ -9,6 +9,7 @@ import pkg from 'express-openid-connect';
 const { auth: OIDCAuth, requiresAuth } = pkg;
 import path from 'path';
 import { fileURLToPath } from 'url';
+import pgSession from 'connect-pg-simple';
 
 dotenv.config();
 
@@ -32,7 +33,6 @@ const config = {
   clientSecret: process.env.OIDC_CLIENT_SECRET,
   issuerBaseURL: AUTH_SEVRER,
   baseURL: externalUrl || `http://localhost:${PORT}`,
-  // baseURL: `${process.env.BASE_URL}:${PORT}`,
   authorizationParams: {
     response_type: 'code',
   },
@@ -48,6 +48,10 @@ const pool = new Pool({
   port: process.env.PGPORT,
   database: process.env.PGDATABASE,
   pplication_name: 'QrCode Generator',
+  ssl: {
+    rejectUnauthorized: false,
+    require: process.env.PGSSLMODE,
+  },
 });
 
 pool
@@ -76,6 +80,9 @@ app.use(
 
 app.use(
   session({
+    store: new (pgSession(session))({
+      pool: pool,
+    }),
     secret: process.env.OIDC_SECRET,
     resave: false,
     saveUninitialized: true,
