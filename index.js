@@ -4,12 +4,12 @@ import * as dotenv from 'dotenv';
 import QRCode from 'qrcode';
 import cors from 'cors';
 import { auth } from 'express-oauth2-jwt-bearer';
-import session from 'express-session';
+// import session from 'express-session';
 import pkg from 'express-openid-connect';
 const { auth: OIDCAuth, requiresAuth } = pkg;
 import path from 'path';
 import { fileURLToPath } from 'url';
-import pgSession from 'connect-pg-simple';
+// import pgSession from 'connect-pg-simple';
 
 dotenv.config();
 
@@ -78,17 +78,14 @@ app.use(
   ),
 );
 
-app.use(
-  session({
-    store: new (pgSession(session))({
-      pool: pool,
-    }),
-    secret: process.env.OIDC_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: process.env.SECURE_COOKIE },
-  }),
-);
+// app.use(
+//   session({
+//     secret: process.env.OIDC_SECRET,
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { secure: process.env.SECURE_COOKIE },
+//   }),
+// );
 
 app.use(OIDCAuth(config));
 
